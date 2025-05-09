@@ -10,6 +10,8 @@ const adminlogin = async (req, res) => {
         }
         else {
             res.status(401).json({ message: "Login Failed" })
+            console.log("Login Failed");
+
         }
     }
     catch (err) {
