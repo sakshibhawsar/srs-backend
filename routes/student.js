@@ -5,8 +5,8 @@ export const Studentrouter = express.Router();
 
 //register student 
 Studentrouter.route("/register")
-    .get(studentController.getallstudents)
     .post(studentController.registerstudent);
+
 //login student
 Studentrouter.route("/login")
     .post(studentController.loginstudent)
@@ -19,3 +19,13 @@ Studentrouter.route("/approved-students")
 //delete student by admin
 Studentrouter.route("/delete-student/:id")
     .delete(studentController.deletestudentbyId);
+
+//other details of student
+// Studentrouter.route("/update-additional-details/:id")
+//     .put(studentController.updateAdditionalDetails);
+//add other details of student
+// Studentrouter.route("/add-other-details")
+//     .post(studentController.addotherdetails);
+//get personal details of student
+Studentrouter.route("/personal-details/:id")
+    .post(studentController.personalDetails);

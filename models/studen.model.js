@@ -1,27 +1,20 @@
-import mongoose from 'mongoose';
-// import bcrypt from 'bcrypt';
-
+import mongoose from "mongoose";
 const studentSchema = new mongoose.Schema({
     name: String,
     lastname: String,
-    email: { type: String, unique: true },
-    enrollmentnumber: { type: String, unique: true },
+    email: { type: String, },
+    enrollmentnumber: { type: String },
+    course: String,
     password: String,
     isApproved: { type: Boolean, default: false },
-    additionalDetails: {
-        address: String,
-        phone: String,
-        // add more as needed
-    }
+    address: String,
+    phone: String,
+    aadharCardNumber: { type: String, }, // Aadhar should be unique!
+    marks10th: Number,
+    marks12th: Number,
+    eventCertificates: [String], // Array to store certificates (as URLs or file names)
+
 },
     { timestamps: true }
 );
-
-// studentSchema.pre('save', function (next) {
-//     this.password = bcrypt.hashSync(this.password, 10);
-//     next();
-// })
-// studentSchema.methods.comparePassword = function (password) {
-//     return bcrypt.compareSync(password, this.password);
-// }
-export const Student = mongoose.model('Student', studentSchema);
+export const Student = mongoose.model("Student", studentSchema);

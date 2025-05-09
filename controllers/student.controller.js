@@ -1,17 +1,10 @@
 // File: controllers/student.controller.js
 import { Student } from "../models/studen.model.js"; // Make sure filename is correct
 import bcrypt from "bcrypt";
-const getallstudents = async (req, res) => {
-    try {
-        const students = await Student.find();
-        res.status(200).json(students)
 
-    }
-    catch (error) {
-        console.error("Error fetching students:", error);
-        res.status(500).json({ message: "Internal server error", error });
-    }
-}
+
+
+
 
 const registerstudent = async (req, res) => {
     try {
@@ -70,8 +63,12 @@ const loginstudent = async (req, res) => {
             student: {
                 id: student._id,
                 name: student.name,
+                lastname: student.lastname,
                 email: student.email,
-                enrollmentnumber: student.enrollmentnumber
+                enrollmentnumber: student.enrollmentnumber,
+                course: student.course,
+                isApproved: student.isApproved,
+                phone: student.phone,
             }
         });
 
@@ -115,4 +112,75 @@ const deletestudentbyId = async (req, res) => {
         res.status(500).json({ message: "Internal server error", error: error.message });
     }
 }
-export default { getallstudents, registerstudent, loginstudent, pendingstudent, approvedstudents, deletestudentbyId };
+
+
+// const addotherdetails = async (req, res) => {
+// }
+// const updateAdditionalDetails = async (req, res) => {
+
+
+//     const { id } = req.params;
+//     const { address, phone, aadharCardNumber, marks10th, marks12th, eventCertificates } = req.body;
+
+//     try {
+//         const updatedStudent = await Student.findByIdAndUpdate(
+//             id,
+//             {
+//                 $set: {
+//                     'additionalDetails.address': address,
+//                     'additionalDetails.phone': phone,
+//                     'additionalDetails.aadharCardNumber': aadharCardNumber,
+//                     'additionalDetails.marks10th': marks10th,
+//                     'additionalDetails.marks12th': marks12th,
+//                     'additionalDetails.eventCertificates': eventCertificates,
+//                 }
+//             },
+//             { new: true }
+//         );
+
+//         if (!updatedStudent) {
+//             return res.status(404).json({ message: "Student not found" });
+//         }
+
+//         res.status(200).json(updatedStudent);
+//     } catch (error) {
+//         console.error('Error updating additional details:', error);
+//         res.status(500).json({ message: "Server error" });
+//     }
+// }
+
+const personalDetails = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const student = await Student.findById(id);
+        if (!student) {
+            return res.status(404).json({ message: "Student not found" });
+        }
+
+
+
+        console.log(
+            student
+        )
+        const personalDetails = new Student(
+            {
+                enrollmentnumber: student.enrollmentnumber,
+                address: req.body.address,
+                phone: req.body.phone,
+                aadharCardNumber: req.body.aadharCardNumber,
+                marks10th: req.body.marks10th,
+                marks12th: req.body.marks12th,
+                eventCertificates: req.body.eventCertificates,
+            }
+        );
+        const savedDetails = await personalDetails.save();
+        if (savedDetails) {
+            res.status(201).json(savedDetails);
+        }
+
+    } catch (error) {
+        console.error("Error registering student:", error);
+        res.status(500).json({ message: "Internal server error", error });
+    }
+}
+export default { registerstudent, loginstudent, pendingstudent, approvedstudents, deletestudentbyId, personalDetails };

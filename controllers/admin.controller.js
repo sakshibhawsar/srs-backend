@@ -33,7 +33,7 @@ const approvebyadmin = async (req, res) => {
         //  Generate password using last 2 digits of enrollment + lowercase name
         const lastTwoDigits = student.enrollmentnumber.slice(-2);
         const lowercaseName = student.name.toLowerCase();
-        const generatedPassword = `${lastTwoDigits}${lowercaseName}`; // e.g., "78udit"
+        const generatedPassword = `${lowercaseName}${lastTwoDigits}`; // e.g., "udit78"
 
         //  Hash the password
         const hashedPassword = bcrypt.hashSync(generatedPassword, 10);
